@@ -2,18 +2,21 @@ import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/app/prismadb";
 import bcrypt from "bcrypt";
-import axios from "axios";
 
 export const options: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "email", type: "text", placeholder: "Your email" },
+        email: {
+          label: "email",
+          type: "text",
+          placeholder: "your email",
+        },
         password: {
           label: "password",
           type: "password",
-          placeholder: "Your password",
+          placeholder: "your password",
         },
       },
       async authorize(credentials) {
@@ -25,9 +28,11 @@ export const options: NextAuthOptions = {
             email: credentials.email,
           },
         });
+
         if (!user || !user?.password) {
           throw new Error("Invalid credentials");
         }
+
         const isCorrectedPassword = await bcrypt.compare(
           credentials.password,
           user.password
@@ -36,13 +41,14 @@ export const options: NextAuthOptions = {
         if (!isCorrectedPassword) {
           throw new Error("Invalid credentials");
         }
+
         return user;
       },
     }),
   ],
   pages: {
     signIn: "/signin",
-    error: "signin",
+    error: "/signin",
   },
   callbacks: {
     session: async ({ session, token, user }) => {

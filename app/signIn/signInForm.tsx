@@ -46,10 +46,10 @@ function SignInForm(props: Props) {
           비밀번호
         </label>
         <input
-          type="text"
+          type="password"
           className="p-2 border-gray-300 border-[1px] rounded-lg w-[300px] mb-4 focus:outline-none 
     focus:border-gray-600 text-black"
-          id="name"
+          id="password"
           value={user.password}
           placeholder="비밀번호를 입력해주세요"
           onChange={(e) => setUser({ ...user, password: e.target.value })}
