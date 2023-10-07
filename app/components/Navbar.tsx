@@ -55,7 +55,7 @@ function Navbar(props: Props) {
                 showProfile ? "" : "hidden"
               }`}
             >
-              <Link href="/sign">SignIn</Link>
+              <Link href="/signIn">SignIn</Link>
             </div>
           </div>
           <Link href="/cart">
