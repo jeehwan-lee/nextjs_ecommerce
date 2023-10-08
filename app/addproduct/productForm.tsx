@@ -2,8 +2,10 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Color from "../components/Color";
+import Description from "../components/Description";
+import ImageUpload from "../components/ImageUpload";
 import Navbar from "../components/Navbar";
 import Size from "../components/Size";
 
@@ -15,7 +17,7 @@ function ProductForm(props: Props) {
   const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
-    description: "",
+    description: `<div><p>Enter your text here</p></div>`,
     category: "",
     style: "",
     size: "",
@@ -26,6 +28,10 @@ function ProductForm(props: Props) {
     userId: id,
     store: "",
   });
+
+  const [description, setDescription] = useState<string>("");
+  const [info, setInfo] = useState<any>();
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -50,6 +56,26 @@ function ProductForm(props: Props) {
       [e.target.name]: inventory,
     });
   };
+
+  const handleImageChange = () => {
+    const stringimages = JSON.stringify(imageUrls);
+    setFormData({
+      ...formData,
+      images: stringimages,
+      description: description,
+      userId: id,
+    });
+  };
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      description: description,
+      images: imageUrls.toString(),
+      userId: id,
+    }));
+  }, [imageUrls]);
+
   return (
     <div className="px-5 max-w-[1280px] mx-auto mb-10">
       <div>
@@ -159,6 +185,23 @@ function ProductForm(props: Props) {
             <Color setFormData={setFormData} Color={formData.color} />
           </div>
         </div>
+        <label htmlFor="" className="mt-10 inline-block font-medium">
+          Description about your product
+        </label>
+        <Description
+          description={formData.description}
+          setDescrition={setDescription}
+        />
+        <label htmlFor="" className="mt-10 inline-block font-medium">
+          Upload Images
+        </label>
+        <ImageUpload
+          info={info}
+          setInfo={setInfo}
+          imageUrls={imageUrls}
+          setImageUrls={setImageUrls}
+          handleImageChange={handleImageChange}
+        />
       </div>
     </div>
   );

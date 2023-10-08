@@ -17,6 +17,10 @@ function Color({ setFormData, Color }: Props) {
     setSelectedColors([]);
   }
 
+  useEffect(() => {
+    handleSelectedColors();
+  }, [selectedColors]);
+
   const handleColorButtonClick = () => {
     setSelectedColors((prev) => [...prev, color]);
     setOpen(false);
@@ -36,10 +40,6 @@ function Color({ setFormData, Color }: Props) {
       return updateColors;
     });
   };
-
-  useEffect(() => {
-    handleSelectedColors();
-  }, [selectedColors]);
 
   return (
     <div>
